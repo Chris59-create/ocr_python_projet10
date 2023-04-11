@@ -1,10 +1,19 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from models import User
+
+User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class SignUpSerializer(serializers.ModelSerializer):
 
-    class Meta(object):
+    class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('email', 'first_name', 'last_name', 'password')
+
+    def validate_email(self, value):
+
+        if User.objects.filter(email=value).exists():
+
+            raise serializers.ValidationError("L'email est déjà utilisé")
+
+        return value
