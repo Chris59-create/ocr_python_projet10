@@ -5,6 +5,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView
 )
 
+app_name = 'app_authentication'
+
 urlpatterns = [
     path(
         'api/token/',

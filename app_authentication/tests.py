@@ -9,7 +9,7 @@ class TestSetUp(APITestCase):
 
     def setUp(self):
 
-        self.signup_url = reverse('signup')
+        self.signup_url = reverse('app_authentication:signup')
 
         self.fake = Faker('fr_FR')
 
