@@ -1,12 +1,12 @@
-from rest_framework import permissions
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from .serializers import SignUpSerializer
 from rest_framework import status
 from rest_framework.response import Response
 
 
-class SignupView(APIView):
-    permission_classes = (permissions.AllowAny,)
+class SignupAPIView(APIView):
+    permission_classes = (AllowAny,)
 
     serializer_class = SignUpSerializer
 
@@ -15,7 +15,7 @@ class SignupView(APIView):
         user_data = request.data
         serializer = SignUpSerializer(data=user_data)
 
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
 
             response = {
@@ -29,4 +29,3 @@ class SignupView(APIView):
             data=serializer.data,
             status=status.HTTP_400_BAD_REQUEST
         )
-

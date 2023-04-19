@@ -6,4 +6,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('app_authentication.urls',
                          namespace='app_authentication')),
+    path('api/', include('app_softdesk.urls', namespace='app_softdesk')),
 ]

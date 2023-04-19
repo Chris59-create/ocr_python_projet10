@@ -1,3 +1,10 @@
-from django.test import TestCase
+from django.urls import reverse
+from rest_framework.test import APITestCase
 
-# Create your tests here.
+from . models import Project
+
+
+class TestSoftdesk(APITestCase):
+    pass
+
+
