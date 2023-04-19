@@ -1,11 +1,16 @@
+import pdb
+
+from django.db.transaction import atomic
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
+from projet10.mixins import MultipleSerializerMixin
 from .serializers import ProjectDetailSerializer, ProjectListSerializer
 from .models import Project
+from app_authentication.models import Contributor
 
 
-class ProjectViewset(ModelViewSet):
+class ProjectViewset(MultipleSerializerMixin, ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     serializer_class = ProjectListSerializer
@@ -14,12 +19,10 @@ class ProjectViewset(ModelViewSet):
     def get_queryset(self):
         return Project.objects.all()
 
-    def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return self.detail_serializer_class
-        return super().get_serializer_class()
-
+    @atomic
     def perform_create(self, serializer):
         user = self.request.user
-        serializer.save(author_user=user)
+        new_project = serializer.save(author_user=user)
+        Contributor.objects.create(user=user, project=new_project,
+                                   permission="R")
 
